@@ -13,7 +13,7 @@ function Header() {
   return (
     <header className="flex items-center justify-between px-4 h-15 sm:px-6">
       <Link href="/dashboard" className="font-medium uppercase tracking-widest">
-        Grouply
+        Grouplyy
       </Link>
 
       <div className="flex items-center gap-2">

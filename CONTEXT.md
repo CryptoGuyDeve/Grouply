@@ -1,7 +1,7 @@
-# Grouply – Project Context and Architecture
+# Grouplyy – Project Context and Architecture
 
 ## Overview
-Grouply is a Next.js 15 App Router application that enables authenticated users to chat in real time and start HD video calls. It integrates three managed services:
+Grouplyy is a Next.js 15 App Router application that enables authenticated users to chat in real time and start HD video calls. It integrates three managed services:
 - Clerk for authentication and user management
 - Convex for serverless data and user search/sync
 - Stream for real-time chat (Stream Chat) and video (Stream Video)

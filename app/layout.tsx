@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Grouply – Connect & Collaborate",
+  title: "Grouplyy – Connect & Collaborate",
   description:
-    "Grouply is the ultimate platform to create, manage, and collaborate in groups. Effortlessly organize projects, share ideas, and achieve more together.",
+    "Grouplyy is the ultimate platform to create, manage, and collaborate in groups. Effortlessly organize projects, share ideas, and achieve more together.",
 };
 
 export default function RootLayout({

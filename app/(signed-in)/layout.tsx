@@ -43,7 +43,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               />
               <Link href="/dashboard">
                 <h1 className="text-lg font-bold tracking-wider uppercase">
-                  Grouply
+                  Grouplyy
                 </h1>
               </Link>
             </header>

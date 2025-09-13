@@ -26,7 +26,7 @@ export default function Home() {
               Connect and Collaborate
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400">
-                with Grouply.
+                with Grouplyy.
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -90,7 +90,7 @@ export default function Home() {
                 Everything you need to stay connected
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Grouply offers a suite of powerful features designed to enhance
+                Grouplyy offers a suite of powerful features designed to enhance
                 your collaboration experience.
               </p>
             </div>
@@ -137,7 +137,7 @@ export default function Home() {
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
                 Join thousands of users who already enjoy seamless group
-                interactions with Grouply. Start your journey today! -
+                interactions with Grouplyy. Start your journey today! -
                 Completely free to use.
               </p>
 
@@ -174,7 +174,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-12">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-10 sm:gap-0">
             <div className="text-center sm:text-left">
-              <span className="text-2xl font-extrabold tracking-tight">Grouply</span>
+              <span className="text-2xl font-extrabold tracking-tight">Grouplyy</span>
               <p className="text-base text-muted-foreground mt-2 font-medium">
                 The future of group collaboration.
               </p>
@@ -202,7 +202,7 @@ export default function Home() {
           </div>
           <div className="border-t mt-10 pt-6 text-center">
             <p className="text-xs text-muted-foreground font-light leading-relaxed">
-              © 2025 Grouply. All rights reserved. We have no affiliation with Meta or Facebook. Any usage of their assets, trademarks, or products is purely for demonstrative purposes. This is a personal project and is not endorsed by or affiliated with any official entities.
+              © 2025 Grouplyy. All rights reserved. We have no affiliation with Meta or Facebook. Any usage of their assets, trademarks, or products is purely for demonstrative purposes. This is a personal project and is not endorsed by or affiliated with any official entities.
             </p>
           </div>
         </div>

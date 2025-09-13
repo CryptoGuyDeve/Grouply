@@ -1,4 +1,4 @@
-# 🚀 Grouply
+# 🚀 Grouplyy
 
 > **Modern team collaboration platform** with real-time messaging, HD video calls, and advanced group management powered by role-based permissions.
 
@@ -93,8 +93,8 @@ graph TB
 
 ### 1️⃣ Clone & Install
 ```bash
-git clone https://github.com/yourusername/grouply.git
-cd grouply
+git clone https://github.com/yourusername/Grouplyy.git
+cd Grouplyy
 npm install
 ```
 
@@ -156,7 +156,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 📁 Project Structure
 
 ```
-grouply/
+Grouplyy/
 ├── 📱 app/                          # Next.js App Router
 │   ├── (signed-in)/                # Authenticated routes
 │   │   ├── dashboard/              # Main chat interface
@@ -272,8 +272,8 @@ We welcome contributions! Here's how to get started:
 
 ### 1. Fork & Clone
 ```bash
-git clone https://github.com/yourusername/grouply.git
-cd grouply
+git clone https://github.com/yourusername/Grouplyy.git
+cd Grouplyy
 ```
 
 ### 2. Create Feature Branch
