@@ -21,6 +21,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Chat } from "stream-chat-react";
 import "stream-chat-react/dist/css/v2/index.css";
+import Image from "next/image";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -43,7 +44,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               />
               <Link href="/dashboard">
                 <h1 className="text-lg font-bold tracking-wider uppercase">
-                  Grouplyy
+                <Image src="/grouplypng.png" alt="Grouplyy" width={150} height={150} />
                 </h1>
               </Link>
             </header>

@@ -83,6 +83,7 @@ Server functions: `convex/users.ts`
 ## User Sync and Chat Initialization
 Component: `components/UserSyncWrapper.tsx`
 - On mount with an authenticated user:
+  0) 
   1) Calls `api.users.upsertUser` to sync Clerk user into Convex.
   2) Connects the Stream Chat client with a token provider that calls the server action `actions/createToken.ts`.
 - On unmount or sign-out, disconnects the Stream user.
