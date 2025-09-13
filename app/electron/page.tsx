@@ -13,20 +13,9 @@ export default function ElectronApp() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
-  // Redirect to dashboard if already logged in
-  useEffect(() => {
-    if (isLoaded && user) {
-      router.push("/dashboard");
-    }
-  }, [isLoaded, user, router]);
-
   useEffect(() => {
     setIsAnimating(true);
   }, []);
-
-  if (isLoaded && user) {
-    return null; // Will redirect
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
