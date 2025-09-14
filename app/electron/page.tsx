@@ -18,23 +18,23 @@ export default function ElectronApp() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Gradient Orbs */}
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
         
         {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
         
         {/* Floating Particles */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-pulse"
+              className="absolute w-1 h-1 bg-gray-600 rounded-full opacity-20 animate-pulse"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -50,15 +50,15 @@ export default function ElectronApp() {
         {/* Header with Social Proof */}
         <div className="pt-8 px-6">
           <div className={`flex items-center justify-center mb-8 transition-all duration-1000 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20">
+            <div className="flex items-center space-x-3 bg-gray-100 backdrop-blur-md rounded-full px-6 py-3 border border-gray-200">
               <div className="flex -space-x-2">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 border-2 border-white shadow-lg"></div>
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-500 border-2 border-white shadow-lg"></div>
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-red-500 border-2 border-white shadow-lg"></div>
               </div>
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm text-white font-medium">+5K Businesses Rely On Grouplyy</span>
+                <Sparkles className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm text-gray-800 font-medium">+5K Businesses Rely On Grouplyy</span>
               </div>
             </div>
           </div>
@@ -69,22 +69,22 @@ export default function ElectronApp() {
           <div className="max-w-6xl w-full">
             {/* Main Headline */}
             <div className={`text-center mb-12 transition-all duration-1000 delay-300 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
-                <Rocket className="w-5 h-5 text-blue-400" />
-                <span className="text-sm font-medium text-blue-300">Desktop App v2.1.0</span>
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-gray-200">
+                <Rocket className="w-5 h-5 text-blue-600" />
+                <span className="text-sm font-medium text-blue-700">Desktop App v2.1.0</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
                 Welcome to{" "}
-                <span className="relative bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <span className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Grouplyy
                   <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
                 </span>
                 <br />
-                <span className="text-4xl md:text-5xl font-light text-gray-300">Desktop Experience</span>
+                <span className="text-4xl md:text-5xl font-light text-gray-600">Desktop Experience</span>
               </h1>
               
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 You just opened the app! Continue to enjoy seamless group collaboration with our powerful desktop experience.
               </p>
             </div>
@@ -107,7 +107,7 @@ export default function ElectronApp() {
               
               <Button 
                 variant="outline" 
-                className="group bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 px-10 py-5 text-lg font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                className="group bg-gray-100 backdrop-blur-md border-2 border-gray-300 text-gray-800 hover:bg-gray-200 px-10 py-5 text-lg font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
                 onClick={() => {
                   window.open('https://github.com/CryptoGuyDeve/Grouply', '_blank');
                 }}
@@ -124,7 +124,7 @@ export default function ElectronApp() {
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto transition-all duration-1000 delay-700 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
               {/* Top Left - App Performance */}
               <div 
-                className={`group relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'performance' ? 'shadow-blue-500/25' : ''}`}
+                className={`group relative bg-gray-50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200 hover:border-gray-300 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'performance' ? 'shadow-blue-500/25' : ''}`}
                 onMouseEnter={() => setHoveredCard('performance')}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -133,8 +133,8 @@ export default function ElectronApp() {
                     <Zap className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">App Performance</h3>
-                <p className="text-sm text-gray-300 mb-6">Current Session</p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">App Performance</h3>
+                <p className="text-sm text-gray-600 mb-6">Current Session</p>
                 
                 <div className="flex items-center justify-center mb-6">
                   <div className="relative w-32 h-32">
@@ -174,14 +174,14 @@ export default function ElectronApp() {
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-white mb-2">80%</div>
-                  <p className="text-sm text-gray-300">App is running smoothly with optimal performance.</p>
+                  <div className="text-4xl font-bold text-gray-900 mb-2">80%</div>
+                  <p className="text-sm text-gray-600">App is running smoothly with optimal performance.</p>
                 </div>
               </div>
 
               {/* Top Right - Messages Chart */}
               <div 
-                className={`group relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'messages' ? 'shadow-green-500/25' : ''}`}
+                className={`group relative bg-gray-50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200 hover:border-gray-300 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'messages' ? 'shadow-green-500/25' : ''}`}
                 onMouseEnter={() => setHoveredCard('messages')}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -190,36 +190,36 @@ export default function ElectronApp() {
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Messages & Activity</h3>
-                <p className="text-sm text-gray-300 mb-6">Today's Activity</p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Messages & Activity</h3>
+                <p className="text-sm text-gray-600 mb-6">Today's Activity</p>
                 
                 <div className="space-y-6">
                   <div className="flex items-end justify-between h-40">
                     <div className="flex flex-col items-center group/bar">
                       <div className="w-10 bg-gradient-to-t from-gray-600 to-gray-400 rounded-t-lg h-16 mb-3 group-hover/bar:from-blue-500 group-hover/bar:to-blue-400 transition-all duration-300"></div>
-                      <span className="text-xs text-gray-400">Mon</span>
+                      <span className="text-xs text-gray-500">Mon</span>
                     </div>
                     <div className="flex flex-col items-center group/bar">
                       <div className="w-10 bg-gradient-to-t from-gray-600 to-gray-400 rounded-t-lg h-20 mb-3 group-hover/bar:from-blue-500 group-hover/bar:to-blue-400 transition-all duration-300"></div>
-                      <span className="text-xs text-gray-400">Tue</span>
+                      <span className="text-xs text-gray-500">Tue</span>
                     </div>
                     <div className="flex flex-col items-center group/bar">
                       <div className="w-10 bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg h-28 mb-3 relative group-hover/bar:scale-110 transition-all duration-300">
-                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-400">34%</span>
+                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-600">34%</span>
                       </div>
-                      <span className="text-xs text-gray-400">Wed</span>
+                      <span className="text-xs text-gray-500">Wed</span>
                     </div>
                     <div className="flex flex-col items-center group/bar">
                       <div className="w-10 bg-gradient-to-t from-gray-600 to-gray-400 rounded-t-lg h-18 mb-3 group-hover/bar:from-blue-500 group-hover/bar:to-blue-400 transition-all duration-300"></div>
-                      <span className="text-xs text-gray-400">Thu</span>
+                      <span className="text-xs text-gray-500">Thu</span>
                     </div>
                     <div className="flex flex-col items-center group/bar">
                       <div className="w-10 bg-gradient-to-t from-gray-600 to-gray-400 rounded-t-lg h-14 mb-3 group-hover/bar:from-blue-500 group-hover/bar:to-blue-400 transition-all duration-300"></div>
-                      <span className="text-xs text-gray-400">Fri</span>
+                      <span className="text-xs text-gray-500">Fri</span>
                     </div>
                   </div>
                   
-                  <div className="flex justify-between text-xs text-gray-400">
+                  <div className="flex justify-between text-xs text-gray-500">
                     <span>50</span>
                     <span>100</span>
                     <span>150</span>
@@ -229,7 +229,7 @@ export default function ElectronApp() {
 
               {/* Bottom Left - App Features */}
               <div 
-                className={`group relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'features' ? 'shadow-purple-500/25' : ''}`}
+                className={`group relative bg-gray-50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200 hover:border-gray-300 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'features' ? 'shadow-purple-500/25' : ''}`}
                 onMouseEnter={() => setHoveredCard('features')}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -242,34 +242,34 @@ export default function ElectronApp() {
                   <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mr-3">
                     <CheckCircle className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">App Features</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">App Features</h3>
                 </div>
-                <p className="text-sm text-gray-300 mb-6">Available Features: Real-time Chat, Video Calls</p>
+                <p className="text-sm text-gray-600 mb-6">Available Features: Real-time Chat, Video Calls</p>
                 
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between items-center bg-white/5 rounded-xl p-3">
-                    <span className="text-sm text-gray-300">50+ Active Groups</span>
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <div className="flex justify-between items-center bg-gray-100 rounded-xl p-3">
+                    <span className="text-sm text-gray-700">50+ Active Groups</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   </div>
-                  <div className="flex justify-between items-center bg-white/5 rounded-xl p-3">
-                    <span className="text-sm text-gray-300">1M+ Messages Sent</span>
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <div className="flex justify-between items-center bg-gray-100 rounded-xl p-3">
+                    <span className="text-sm text-gray-700">1M+ Messages Sent</span>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                   </div>
-                  <div className="flex justify-between items-center bg-white/5 rounded-xl p-3">
-                    <span className="text-sm text-gray-300">4.8/5 User Rating</span>
+                  <div className="flex justify-between items-center bg-gray-100 rounded-xl p-3">
+                    <span className="text-sm text-gray-700">4.8/5 User Rating</span>
                     <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
                     </div>
                   </div>
-                  <div className="flex justify-between items-center bg-white/5 rounded-xl p-3">
-                    <span className="text-sm text-gray-300">99.9% Uptime</span>
+                  <div className="flex justify-between items-center bg-gray-100 rounded-xl p-3">
+                    <span className="text-sm text-gray-700">99.9% Uptime</span>
                     <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
                     </div>
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-400 mb-6">App Version 2.1.0</p>
+                <p className="text-sm text-gray-500 mb-6">App Version 2.1.0</p>
                 
                 <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
                   Open Dashboard
@@ -280,7 +280,7 @@ export default function ElectronApp() {
               <div className="space-y-6">
                 {/* Main Profile Card */}
                 <div 
-                  className={`group relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-white/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'profile1' ? 'shadow-pink-500/25' : ''}`}
+                  className={`group relative bg-gray-50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200 hover:border-gray-300 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${hoveredCard === 'profile1' ? 'shadow-pink-500/25' : ''}`}
                   onMouseEnter={() => setHoveredCard('profile1')}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
@@ -294,11 +294,11 @@ export default function ElectronApp() {
                       CG
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-white">Cheyenne Gouse</h4>
-                      <p className="text-sm text-gray-300">+91 9800000000</p>
+                      <h4 className="text-xl font-bold text-gray-900">Cheyenne Gouse</h4>
+                      <p className="text-sm text-gray-600">+91 9800000000</p>
                       <div className="flex items-center mt-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                        <span className="text-xs text-green-400">Online</span>
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        <span className="text-xs text-green-600">Online</span>
                       </div>
                     </div>
                   </div>
@@ -306,7 +306,7 @@ export default function ElectronApp() {
 
                 {/* Secondary Profile Card */}
                 <div 
-                  className={`group relative bg-white/5 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-white/10 hover:border-white/30 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 -mt-4 ml-8 ${hoveredCard === 'profile2' ? 'shadow-blue-500/25' : ''}`}
+                  className={`group relative bg-gray-100 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-gray-200 hover:border-gray-300 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 -mt-4 ml-8 ${hoveredCard === 'profile2' ? 'shadow-blue-500/25' : ''}`}
                   onMouseEnter={() => setHoveredCard('profile2')}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
@@ -315,11 +315,11 @@ export default function ElectronApp() {
                       RK
                     </div>
                     <div>
-                      <h4 className="font-bold text-white">Roger Kanter</h4>
-                      <p className="text-xs text-gray-300">+91 9800000001</p>
+                      <h4 className="font-bold text-gray-900">Roger Kanter</h4>
+                      <p className="text-xs text-gray-600">+91 9800000001</p>
                       <div className="flex items-center mt-1">
-                        <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
-                        <span className="text-xs text-yellow-400">Away</span>
+                        <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                        <span className="text-xs text-yellow-600">Away</span>
                       </div>
                     </div>
                   </div>
@@ -331,10 +331,10 @@ export default function ElectronApp() {
 
         {/* Footer */}
         <div className={`text-center pb-8 transition-all duration-1000 delay-1000 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20">
-            <Globe className="w-5 h-5 text-blue-400" />
-            <p className="text-gray-300">
-              Ready to continue? <span className="font-bold text-white">4,000+</span> users are already collaborating
+          <div className="inline-flex items-center space-x-2 bg-gray-100 backdrop-blur-md rounded-full px-6 py-3 border border-gray-200">
+            <Globe className="w-5 h-5 text-blue-600" />
+            <p className="text-gray-700">
+              Ready to continue? <span className="font-bold text-gray-900">4,000+</span> users are already collaborating
             </p>
           </div>
         </div>
@@ -344,7 +344,7 @@ export default function ElectronApp() {
           <SignInButton mode="modal" forceRedirectUrl="/dashboard">
             <Button 
               variant="outline" 
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-white/30 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+              className="bg-gray-100 backdrop-blur-md hover:bg-gray-200 text-gray-800 border-gray-300 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
             >
               Sign In
             </Button>
