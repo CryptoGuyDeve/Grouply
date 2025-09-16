@@ -1,8 +1,10 @@
+'use client'
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import {
   BluetoothSearching,
+  ChartArea,
   MessageCircle,
   Shield,
   Users,
@@ -10,8 +12,11 @@ import {
   Zap,
 } from "lucide-react";
 import FeatureIcon from "@/components/FeatureIcon";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -68,9 +73,12 @@ export default function Home() {
               variant="outline"
               size="lg"
               className="group bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold tracking-tight transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+              onClick={() => {
+                router.push('/dashboard');
+              }}
             >
-              <Video className="w-6 h-6 mr-3" />
-              Watch Demo
+              <ChartArea className="w-6 h-6 mr-3" />
+              Have you already Signed In?
             </Button>
           </div>
 
@@ -185,6 +193,7 @@ export default function Home() {
                     variant="outline"
                     size="lg"
                     className="bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+
                   >
                     <Users className="w-6 h-6 mr-3" />
                     Learn More
@@ -238,6 +247,12 @@ export default function Home() {
                 className="px-6 py-3 rounded-2xl bg-gray-50 hover:bg-black hover:text-white text-sm font-bold text-black transition-all duration-300 border border-gray-200 hover:border-black"
               >
                 Terms of Service
+              </a>
+              <a
+                href="/team"
+                className="px-6 py-3 rounded-2xl bg-gray-50 hover:bg-black hover:text-white text-sm font-bold text-black transition-all duration-300 border border-gray-200 hover:border-black"
+              >
+                Team
               </a>
               <a
                 href="#"
