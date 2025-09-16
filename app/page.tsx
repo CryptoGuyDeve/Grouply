@@ -22,7 +22,7 @@ export default function Home() {
           <div className="absolute inset-0 -z-10">
             {/* Subtle Grid Pattern */}
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.02%22%3E%3Cpath%20d%3D%22M0%200h40v40H0z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-60"></div>
-            
+
             {/* Modern Geometric Shapes */}
             <div className="absolute top-20 right-20 w-32 h-32 border border-black/5 rounded-2xl rotate-12"></div>
             <div className="absolute bottom-32 left-16 w-24 h-24 border border-black/5 rounded-full"></div>
@@ -63,7 +63,7 @@ export default function Home() {
                 </Button>
               </SignInButton>
             </SignedOut>
-            
+
             <Button
               variant="outline"
               size="lg"
@@ -153,54 +153,62 @@ export default function Home() {
           </div>
 
           {/* Modern CTA Section */}
-          <div className="w-full max-w-5xl">
-            <div className="rounded-3xl border-2 border-black bg-white p-16 text-center shadow-2xl">
-              <h2 className="text-4xl sm:text-5xl font-black mb-6 text-black">
-                Ready to elevate your group interactions?
-              </h2>
-              <p className="text-xl text-gray-700 mb-12 max-w-3xl mx-auto font-light">
-                Join thousands of users who already enjoy seamless group
-                interactions with Grouplyy. Start your journey today!
-                <br />
-                <span className="text-black font-semibold">Completely free to use.</span>
-              </p>
+          <div className="w-full flex justify-center items-center py-20">
+            <div className="w-full max-w-5xl">
+              <div className="rounded-3xl border-2 border-black bg-white p-16 text-center shadow-2xl">
+                <h2 className="text-4xl sm:text-5xl font-black mb-6 text-black">
+                  Ready to elevate your group interactions?
+                </h2>
+                <p className="text-xl text-gray-700 mb-12 max-w-3xl mx-auto font-light">
+                  Join thousands of users who already enjoy seamless group
+                  interactions with Grouplyy. Start your journey today!
+                  <br />
+                  <span className="text-black font-semibold">
+                    Completely free to use.
+                  </span>
+                </p>
 
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
-                <SignedOut>
-                  <SignUpButton mode="modal">
-                    <Button size="lg" className="bg-black hover:bg-gray-800 text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold shadow-2xl hover:shadow-black/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
-                      <Zap className="w-6 h-6 mr-3" />
-                      Get Started Free
-                    </Button>
-                  </SignUpButton>
-                </SignedOut>
-                
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
-                >
-                  <Users className="w-6 h-6 mr-3" />
-                  Learn More
-                </Button>
-              </div>
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
+                  <SignedOut>
+                    <SignUpButton mode="modal">
+                      <Button
+                        size="lg"
+                        className="bg-black hover:bg-gray-800 text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold shadow-2xl hover:shadow-black/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+                      >
+                        <Zap className="w-6 h-6 mr-3" />
+                        Get Started Free
+                      </Button>
+                    </SignUpButton>
+                  </SignedOut>
 
-              <div className="flex justify-center flex-col sm:flex-row items-center gap-8 text-sm text-gray-600">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="font-semibold">No credit card required</span>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+                  >
+                    <Users className="w-6 h-6 mr-3" />
+                    Learn More
+                  </Button>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="font-semibold">Free forever plan available</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="font-semibold">Setup in 30 seconds</span>
+
+                <div className="flex justify-center flex-col sm:flex-row items-center gap-8 text-sm text-gray-600">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="font-semibold">No credit card required</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="font-semibold">Free forever plan available</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="font-semibold">Setup in 30 seconds</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </main>
 
