@@ -13,85 +13,108 @@ import FeatureIcon from "@/components/FeatureIcon";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center px-4 py-16 sm:px-6 text-center gap-20">
-        <div className="max-w-4xl space-y-8 relative">
-          {/* Background gradient */}
-          <div className="absolute inset-0 -z-10 bg-background-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-20 dark:to-purple-950/20 rounded-3xl blur-3xl scale-150 opacity-60"></div>
+      <main className="flex-1 flex flex-col items-center px-4 py-20 sm:px-6 text-center gap-24">
+        <div className="max-w-6xl space-y-12 relative">
+          {/* Modern Background Elements */}
+          <div className="absolute inset-0 -z-10">
+            {/* Subtle Grid Pattern */}
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.02%22%3E%3Cpath%20d%3D%22M0%200h40v40H0z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-60"></div>
+            
+            {/* Modern Geometric Shapes */}
+            <div className="absolute top-20 right-20 w-32 h-32 border border-black/5 rounded-2xl rotate-12"></div>
+            <div className="absolute bottom-32 left-16 w-24 h-24 border border-black/5 rounded-full"></div>
+            <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-black/3 rounded-lg rotate-45"></div>
+          </div>
 
-          <div className="max-w-4xl space-y-8 relative">
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400">
+          <div className="max-w-6xl space-y-12 relative">
+            {/* Modern Badge */}
+            <div className="inline-flex items-center space-x-3 bg-black text-white rounded-full px-6 py-3 mb-8">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold">Now Available - Desktop App v2.1.0</span>
+            </div>
+
+            <h1 className="text-7xl sm:text-8xl font-black tracking-tight text-black leading-[0.9]">
               Connect and Collaborate
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400">
+              <span className="relative">
                 with Grouplyy.
+                <div className="absolute -bottom-4 left-0 w-full h-2 bg-black rounded-full"></div>
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              The ultimate platform to create, manage, and collaborate in
-              groups.
+            <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light">
+              The ultimate platform to create, manage, and collaborate in groups.
               <br />
-              Effortlessly organize projects, share ideas, and achieve more
-              together.
+              <span className="text-black font-semibold">Effortlessly organize projects, share ideas, and achieve more together.</span>
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-6">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 pt-8">
             <SignedOut>
               <SignInButton mode="modal">
                 <Button
                   size="lg"
-                  className="text-lg px-10 py-6 h-auto rounded-full shadow-xl font-semibold tracking-tight transition-all duration-200 transform hover:scale-105 active:scale-100 focus:ring-4 focus:ring-primary/30 focus:outline-none"
+                  className="group bg-black hover:bg-gray-800 text-white text-xl px-12 py-6 h-auto rounded-3xl shadow-2xl font-bold tracking-tight transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 focus:ring-4 focus:ring-black/30 focus:outline-none"
                 >
+                  <Zap className="w-6 h-6 mr-3" />
                   Start Chatting Free
                 </Button>
               </SignInButton>
             </SignedOut>
+            
+            <Button
+              variant="outline"
+              size="lg"
+              className="group bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold tracking-tight transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+            >
+              <Video className="w-6 h-6 mr-3" />
+              Watch Demo
+            </Button>
           </div>
 
-          {/* Social Proof */}
-          <div className="pt-8">
-            <p className="text-sm text-muted-foreground mb-4">
+          {/* Modern Social Proof */}
+          <div className="pt-12">
+            <p className="text-sm text-gray-600 mb-8 font-medium">
               Trusted by thousands of users worldwide
             </p>
-            <div className="flex justify-center items-center gap-8 text-muted-foreground">
+            <div className="flex justify-center items-center gap-12 text-gray-600">
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">50k+</div>
-                <div className="text-sm">Active Users</div>
+                <div className="text-4xl font-black text-black">50k+</div>
+                <div className="text-sm font-medium">Active Users</div>
               </div>
-              <div className="w-px h-8 bg-border"></div>
+              <div className="w-px h-12 bg-gray-300"></div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">1M+</div>
-                <div className="text-sm">Messages Sent</div>
+                <div className="text-4xl font-black text-black">1M+</div>
+                <div className="text-sm font-medium">Messages Sent</div>
               </div>
-              <div className="w-px h-8 bg-border"></div>
+              <div className="w-px h-12 bg-gray-300"></div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">99.9%</div>
-                <div className="text-sm">Uptime</div>
+                <div className="text-4xl font-black text-black">99.9%</div>
+                <div className="text-sm font-medium">Uptime</div>
               </div>
             </div>
           </div>
 
-          {/* Enhanced features section */}
-          <div className="w-full max-w-6xl">
+          {/* Modern Features Section */}
+          <div className="w-full max-w-7xl">
             {/* Section Divider */}
-            <div className="w-full flex items-center justify-center mb-16">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-              <div className="px-6">
-                <div className="w-2 h-2 rounded-full bg-primary/60"></div>
+            <div className="w-full flex items-center justify-center mb-20">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+              <div className="px-8">
+                <div className="w-3 h-3 rounded-full bg-black"></div>
               </div>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
             </div>
 
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl sm:text-6xl font-black mb-8 text-black">
                 Everything you need to stay connected
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Grouplyy offers a suite of powerful features designed to enhance
-                your collaboration experience.
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto font-light">
+                Grouplyy offers a comprehensive suite of powerful features designed to enhance
+                your collaboration experience and boost productivity.
               </p>
             </div>
 
@@ -123,46 +146,57 @@ export default function Home() {
               />
               <FeatureIcon
                 icon={BluetoothSearching}
-                title="Fast Performance"
-                description="Experience fast messaging and video calls with minimal latency."
+                title="Cross-Platform"
+                description="Access your conversations seamlessly across all your devices."
               />
             </div>
           </div>
 
-          {/* Enhanced CTA section */}
-          <div className="w-full max-w-4xl">
-            <div className="rounded-2xl border bg-gradient-to-br from-primary/5 to-primary/10 p-12 text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          {/* Modern CTA Section */}
+          <div className="w-full max-w-5xl">
+            <div className="rounded-3xl border-2 border-black bg-white p-16 text-center shadow-2xl">
+              <h2 className="text-4xl sm:text-5xl font-black mb-6 text-black">
                 Ready to elevate your group interactions?
               </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-700 mb-12 max-w-3xl mx-auto font-light">
                 Join thousands of users who already enjoy seamless group
-                interactions with Grouplyy. Start your journey today! -
-                Completely free to use.
+                interactions with Grouplyy. Start your journey today!
+                <br />
+                <span className="text-black font-semibold">Completely free to use.</span>
               </p>
 
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
                 <SignedOut>
                   <SignUpButton mode="modal">
-                    <Button size="lg" className="text-lg px-8 py-6 h-auto">
+                    <Button size="lg" className="bg-black hover:bg-gray-800 text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold shadow-2xl hover:shadow-black/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
+                      <Zap className="w-6 h-6 mr-3" />
                       Get Started Free
                     </Button>
                   </SignUpButton>
                 </SignedOut>
+                
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="bg-white border-2 border-black text-black hover:bg-black hover:text-white text-xl px-12 py-6 h-auto rounded-3xl font-bold transition-all duration-300 transform hover:scale-105 hover:-translate-y-2"
+                >
+                  <Users className="w-6 h-6 mr-3" />
+                  Learn More
+                </Button>
               </div>
 
-              <div className="flex justify-center flex-col sm:flex-row items-center gap-6 mt-8 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  No credit card required
+              <div className="flex justify-center flex-col sm:flex-row items-center gap-8 text-sm text-gray-600">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span className="font-semibold">No credit card required</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  Free forever plan available
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span className="font-semibold">Free forever plan available</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  Setup in 30 seconds
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span className="font-semibold">Setup in 30 seconds</span>
                 </div>
               </div>
             </div>
@@ -170,38 +204,43 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="w-full bg-white/80 dark:bg-muted/60 border-t-0 shadow-[0_-2px_24px_0_rgba(80,80,120,0.06)] mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-12">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-10 sm:gap-0">
+      <footer className="w-full bg-white border-t-2 border-black mt-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-12 sm:gap-0">
             <div className="text-center sm:text-left">
-              <span className="text-2xl font-extrabold tracking-tight">Grouplyy</span>
-              <p className="text-base text-muted-foreground mt-2 font-medium">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-black rounded-2xl flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">G</span>
+                </div>
+                <span className="text-3xl font-black tracking-tight text-black">Grouplyy</span>
+              </div>
+              <p className="text-lg text-gray-700 font-medium">
                 The future of group collaboration.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
               <a
                 href="#"
-                className="px-4 py-2 rounded-full bg-muted/60 hover:bg-muted/80 text-sm font-semibold text-foreground transition-all shadow-sm border border-transparent hover:border-primary"
+                className="px-6 py-3 rounded-2xl bg-gray-50 hover:bg-black hover:text-white text-sm font-bold text-black transition-all duration-300 border border-gray-200 hover:border-black"
               >
                 Privacy Policy
               </a>
               <a
                 href="#"
-                className="px-4 py-2 rounded-full bg-muted/60 hover:bg-muted/80 text-sm font-semibold text-foreground transition-all shadow-sm border border-transparent hover:border-primary"
+                className="px-6 py-3 rounded-2xl bg-gray-50 hover:bg-black hover:text-white text-sm font-bold text-black transition-all duration-300 border border-gray-200 hover:border-black"
               >
                 Terms of Service
               </a>
               <a
                 href="#"
-                className="px-4 py-2 rounded-full bg-muted/60 hover:bg-muted/80 text-sm font-semibold text-foreground transition-all shadow-sm border border-transparent hover:border-primary"
+                className="px-6 py-3 rounded-2xl bg-gray-50 hover:bg-black hover:text-white text-sm font-bold text-black transition-all duration-300 border border-gray-200 hover:border-black"
               >
                 Support
               </a>
             </div>
           </div>
-          <div className="border-t mt-10 pt-6 text-center">
-            <p className="text-xs text-muted-foreground font-light leading-relaxed">
+          <div className="border-t-2 border-gray-200 mt-12 pt-8 text-center">
+            <p className="text-sm text-gray-600 font-medium leading-relaxed">
               © 2025 Grouplyy. All rights reserved. We have no affiliation with Meta or Facebook. Any usage of their assets, trademarks, or products is purely for demonstrative purposes. This is a personal project and is not endorsed by or affiliated with any official entities.
             </p>
           </div>
