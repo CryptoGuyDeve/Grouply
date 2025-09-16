@@ -9,10 +9,12 @@ export default clerkMiddleware(async (auth, req) => {
 })
 
 export const config = {
+  // Recommended matcher: run middleware on all app routes (excluding static)
+  // and API routes so Clerk can detect the middleware, while we selectively
+  // call auth.protect() only for dashboard via createRouteMatcher above.
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
+    '/((?!.+\\.[\\w]+$|_next).*)',
+    '/',
+    '/(api|trpc)(.*)'
   ],
 };
