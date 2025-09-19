@@ -10,12 +10,22 @@ import {
   Users,
   Video,
   Zap,
+  Download,
 } from "lucide-react";
 import FeatureIcon from "@/components/FeatureIcon";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const handleDesktopInstall = () => {
+    const href = "/grouply-desktop-win32-x64.rar";
+    const anchor = document.createElement("a");
+    anchor.href = href;
+    anchor.download = "grouply-desktop-win32-x64.rar";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -68,6 +78,15 @@ export default function Home() {
                 </Button>
               </SignInButton>
             </SignedOut>
+
+            <Button
+              size="lg"
+              className="group bg-black hover:bg-gray-800 text-white text-xl px-12 py-6 h-auto rounded-3xl shadow-2xl font-bold tracking-tight transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 focus:ring-4 focus:ring-black/30 focus:outline-none"
+              onClick={handleDesktopInstall}
+            >
+              <Download className="w-6 h-6 mr-3" />
+              Install Desktop App
+            </Button>
 
             <Button
               variant="outline"
