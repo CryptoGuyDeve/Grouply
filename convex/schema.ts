@@ -44,4 +44,36 @@ export default defineSchema({
         .index("by_channel", ["channelId"])
         .index("by_user", ["userId"])
         .index("by_channel_user", ["channelId", "userId"]),
+
+    // User payment methods
+    userPaymentMethods: defineTable({
+        userId: v.string(), // Clerk user ID
+        methodType: v.string(), // "easypaisa", "jazzcash", "nayapay", "sadapay", "bank"
+        methodName: v.string(), // Display name like "EasyPaisa - 03001234567"
+        accountNumber: v.string(), // Account number or phone number
+        iban: v.optional(v.string()), // IBAN for banks
+        bankName: v.optional(v.string()), // Bank name for bank transfers
+        isDefault: v.boolean(), // Whether this is the default payment method
+        createdAt: v.number(),
+    })
+        .index("by_user", ["userId"])
+        .index("by_user_type", ["userId", "methodType"]),
+
+    // Payment transactions
+    payments: defineTable({
+        senderId: v.string(), // Clerk user ID of sender
+        receiverId: v.string(), // Clerk user ID of receiver
+        amount: v.number(), // Amount in PKR
+        currency: v.string(), // "PKR"
+        status: v.string(), // "pending", "completed", "failed", "cancelled"
+        paymentMethod: v.string(), // Payment method used
+        description: v.optional(v.string()), // Optional description
+        channelId: v.optional(v.string()), // Stream channel ID if sent in chat
+        createdAt: v.number(),
+        completedAt: v.optional(v.number()),
+    })
+        .index("by_sender", ["senderId"])
+        .index("by_receiver", ["receiverId"])
+        .index("by_channel", ["channelId"])
+        .index("by_status", ["status"]),
 })

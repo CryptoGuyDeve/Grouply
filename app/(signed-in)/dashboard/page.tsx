@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useUser } from "@clerk/nextjs";
-import { EllipsisVertical, LogOutIcon, VideoIcon, Users, MessageSquare } from "lucide-react";
+import { EllipsisVertical, LogOutIcon, VideoIcon, Users, MessageSquare, Send } from "lucide-react";
+import { SendPaymentDialog } from "@/components/SendPaymentDialog";
 import { useRouter } from "next/navigation";
 import {
   Channel,
@@ -119,6 +120,36 @@ function Dashboard() {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  {/* Send Payment Button - only show for 1-on-1 chats */}
+                  {channel.data?.member_count === 2 && (
+                    <SendPaymentDialog
+                      receiverId={Object.keys(channel.state.members || {}).find((id) => id !== user?.id) || ""}
+                      receiverName={(() => {
+                        const memberIds = Object.keys(channel.state.members || {});
+                        const otherUserId = memberIds.find((id) => id !== user?.id);
+                        if (!otherUserId) return "Unknown User";
+                        const otherMember = channel.state.members[otherUserId];
+                        return otherMember?.user?.name || "Unknown User";
+                      })()}
+                      receiverImage={(() => {
+                        const memberIds = Object.keys(channel.state.members || {});
+                        const otherUserId = memberIds.find((id) => id !== user?.id);
+                        if (!otherUserId) return "/vercel.svg";
+                        const otherMember = channel.state.members[otherUserId];
+                        return otherMember?.user?.image || "/vercel.svg";
+                      })()}
+                      channelId={channel.id}
+                    >
+                      <Button
+                        variant="outline"
+                        className="border-2 border-green-600 text-green-600 hover:bg-green-50 rounded-xl px-4 py-2"
+                      >
+                        <Send className="w-4 h-4 mr-2" />
+                        Send Money
+                      </Button>
+                    </SendPaymentDialog>
+                  )}
+
                   <Button
                     variant="outline"
                     onClick={handleCall}

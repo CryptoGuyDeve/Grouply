@@ -32,6 +32,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { EllipsisVertical, UserPlus, Users, Settings } from "lucide-react";
+import { SettingsDialog } from "./SettingsDialog";
 import Image from "next/image";
 import streamClient from "@/lib/stream";
 import { api } from "@/convex/_generated/api";
@@ -1005,7 +1006,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </span>
                   </div>
                 </div>
-                <UserButton signInUrl="/sign-in" />
+                <div className="flex items-center gap-2">
+                  <SettingsDialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-muted/60"
+                    >
+                      <Settings className="h-4 w-4" />
+                    </Button>
+                  </SettingsDialog>
+                  <UserButton signInUrl="/sign-in" />
+                </div>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

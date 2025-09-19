@@ -89,12 +89,12 @@ export default function Home() {
             </p>
             <div className="flex justify-center items-center gap-12 text-gray-600">
               <div className="text-center">
-                <div className="text-4xl font-black text-black">50k+</div>
+                <div className="text-4xl font-black text-black">250+</div>
                 <div className="text-sm font-medium">Active Users</div>
               </div>
               <div className="w-px h-12 bg-gray-300"></div>
               <div className="text-center">
-                <div className="text-4xl font-black text-black">1M+</div>
+                <div className="text-4xl font-black text-black">14k+</div>
                 <div className="text-sm font-medium">Messages Sent</div>
               </div>
               <div className="w-px h-12 bg-gray-300"></div>

@@ -351,3 +351,282 @@ export const initializeGroupRoles = mutation({
     });
   },
 });
+
+// Payment Methods Functions
+
+// Add a payment method for a user
+export const addPaymentMethod = mutation({
+  args: {
+    userId: v.string(),
+    methodType: v.string(), // "easypaisa", "jazzcash", "nayapay", "sadapay", "bank"
+    methodName: v.string(),
+    accountNumber: v.string(),
+    iban: v.optional(v.string()),
+    bankName: v.optional(v.string()),
+    isDefault: v.boolean(),
+  },
+  handler: async (ctx, { userId, methodType, methodName, accountNumber, iban, bankName, isDefault }) => {
+    // If this is set as default, unset all other defaults for this user
+    if (isDefault) {
+      const existingMethods = await ctx.db
+        .query("userPaymentMethods")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
+      
+      for (const method of existingMethods) {
+        if (method.isDefault) {
+          await ctx.db.patch(method._id, { isDefault: false });
+        }
+      }
+    }
+
+    return await ctx.db.insert("userPaymentMethods", {
+      userId,
+      methodType,
+      methodName,
+      accountNumber,
+      iban,
+      bankName,
+      isDefault,
+      createdAt: Date.now(),
+    });
+  },
+});
+
+// Get user's payment methods
+export const getUserPaymentMethods = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    return await ctx.db
+      .query("userPaymentMethods")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .collect();
+  },
+});
+
+// Get user's default payment method
+export const getDefaultPaymentMethod = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    const methods = await ctx.db
+      .query("userPaymentMethods")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isDefault"), true))
+      .first();
+    
+    return methods;
+  },
+});
+
+// Update payment method
+export const updatePaymentMethod = mutation({
+  args: {
+    methodId: v.id("userPaymentMethods"),
+    methodName: v.string(),
+    accountNumber: v.string(),
+    iban: v.optional(v.string()),
+    bankName: v.optional(v.string()),
+    isDefault: v.boolean(),
+  },
+  handler: async (ctx, { methodId, methodName, accountNumber, iban, bankName, isDefault }) => {
+    const method = await ctx.db.get(methodId);
+    if (!method) throw new Error("Payment method not found");
+
+    // If this is set as default, unset all other defaults for this user
+    if (isDefault) {
+      const existingMethods = await ctx.db
+        .query("userPaymentMethods")
+        .withIndex("by_user", (q) => q.eq("userId", method.userId))
+        .collect();
+      
+      for (const existingMethod of existingMethods) {
+        if (existingMethod.isDefault && existingMethod._id !== methodId) {
+          await ctx.db.patch(existingMethod._id, { isDefault: false });
+        }
+      }
+    }
+
+    await ctx.db.patch(methodId, {
+      methodName,
+      accountNumber,
+      iban,
+      bankName,
+      isDefault,
+    });
+  },
+});
+
+// Delete payment method
+export const deletePaymentMethod = mutation({
+  args: { methodId: v.id("userPaymentMethods") },
+  handler: async (ctx, { methodId }) => {
+    await ctx.db.delete(methodId);
+  },
+});
+
+// Payment Transactions Functions
+
+// Create a payment transaction
+export const createPayment = mutation({
+  args: {
+    senderId: v.string(),
+    receiverId: v.string(),
+    amount: v.number(),
+    currency: v.string(),
+    paymentMethod: v.string(),
+    description: v.optional(v.string()),
+    channelId: v.optional(v.string()),
+  },
+  handler: async (ctx, { senderId, receiverId, amount, currency, paymentMethod, description, channelId }) => {
+    if (senderId === receiverId) {
+      throw new Error("Cannot send payment to yourself");
+    }
+
+    if (amount <= 0) {
+      throw new Error("Amount must be greater than 0");
+    }
+
+    return await ctx.db.insert("payments", {
+      senderId,
+      receiverId,
+      amount,
+      currency,
+      status: "pending",
+      paymentMethod,
+      description,
+      channelId,
+      createdAt: Date.now(),
+    });
+  },
+});
+
+// Get user's payment history
+export const getPaymentHistory = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    const sentPayments = await ctx.db
+      .query("payments")
+      .withIndex("by_sender", (q) => q.eq("senderId", userId))
+      .collect();
+
+    const receivedPayments = await ctx.db
+      .query("payments")
+      .withIndex("by_receiver", (q) => q.eq("receiverId", userId))
+      .collect();
+
+    // Get user details for all payments
+    const allUserIds = new Set([
+      ...sentPayments.map(p => p.receiverId),
+      ...receivedPayments.map(p => p.senderId)
+    ]);
+
+    const users = await ctx.db.query("users").collect();
+    const userMap = new Map(users.map(u => [u.userId, u]));
+
+    const allPayments = [
+      ...sentPayments.map(p => ({ ...p, type: "sent", otherUser: userMap.get(p.receiverId) })),
+      ...receivedPayments.map(p => ({ ...p, type: "received", otherUser: userMap.get(p.senderId) }))
+    ];
+
+    return allPayments.sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
+// Get payment methods for a specific user (for sending payments)
+export const getPaymentMethodsForUser = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    const methods = await ctx.db
+      .query("userPaymentMethods")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .collect();
+
+    // Only return method type and display name for privacy
+    return methods.map(method => ({
+      _id: method._id,
+      methodType: method.methodType,
+      methodName: method.methodName,
+      isDefault: method.isDefault,
+    }));
+  },
+});
+
+// Update payment status
+export const updatePaymentStatus = mutation({
+  args: {
+    paymentId: v.id("payments"),
+    status: v.string(),
+  },
+  handler: async (ctx, { paymentId, status }) => {
+    const updateData: any = { status };
+    if (status === "completed") {
+      updateData.completedAt = Date.now();
+    }
+    
+    await ctx.db.patch(paymentId, updateData);
+  },
+});
+
+// Receiver-facing: get full payment details (to display for manual transfer)
+export const getReceiverPaymentDetails = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    const methods = await ctx.db
+      .query("userPaymentMethods")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .collect();
+
+    return methods.map((m) => ({
+      _id: m._id,
+      methodType: m.methodType,
+      methodName: m.methodName,
+      accountNumber: m.accountNumber,
+      iban: m.iban,
+      bankName: m.bankName,
+      isDefault: m.isDefault,
+    }));
+  },
+});
+
+// List pending payments directed to the user (to confirm/cancel/not received)
+export const getPendingPaymentsToMe = query({
+  args: { userId: v.string() },
+  handler: async (ctx, { userId }) => {
+    const pendings = await ctx.db
+      .query("payments")
+      .withIndex("by_receiver", (q) => q.eq("receiverId", userId))
+      .filter((q) => q.eq(q.field("status"), "pending"))
+      .collect();
+
+    const users = await ctx.db.query("users").collect();
+    const userMap = new Map(users.map(u => [u.userId, u]));
+
+    return pendings
+      .map((p) => ({
+        ...p,
+        sender: userMap.get(p.senderId),
+      }))
+      .sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
+// Strict status transition for receiver actions
+export const setPendingPaymentStatus = mutation({
+  args: { paymentId: v.id("payments"), actorId: v.string(), action: v.string() },
+  handler: async (ctx, { paymentId, actorId, action }) => {
+    const payment = await ctx.db.get(paymentId);
+    if (!payment) throw new Error("Payment not found");
+    if (payment.status !== "pending") throw new Error("Only pending payments can be updated");
+    if (payment.receiverId !== actorId) throw new Error("Only receiver can update payment status");
+
+    let status: string;
+    if (action === "confirm") status = "completed";
+    else if (action === "cancel") status = "cancelled";
+    else if (action === "not_received") status = "not_received";
+    else throw new Error("Invalid action");
+
+    const update: any = { status };
+    if (status === "completed") update.completedAt = Date.now();
+    await ctx.db.patch(paymentId, update);
+  },
+});
