@@ -49,18 +49,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useUser();
   // Channel actions are handled in the chat header, not in the sidebar header
   const blockUser = useMutation(api.users.blockUser);
-  
+
   // Get current user data
   const currentUser = useQuery(
     api.users.getUserByClerkId,
     user?.id ? { userId: user.id } : "skip"
   );
-  
+
   // Get blocked user IDs to filter channels
-  const blockedUserIds = useQuery(
-    api.users.getBlockedUserIds,
-    user?.id ? { blockerId: user.id } : "skip"
-  ) || [];
+  const blockedUserIds =
+    useQuery(
+      api.users.getBlockedUserIds,
+      user?.id ? { blockerId: user.id } : "skip"
+    ) || [];
 
   const filters: ChannelFilters = {
     members: { $in: [user?.id as string] },
@@ -71,40 +72,66 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   function ChannelPreview({ channel, setActiveChannel, activeChannel }: any) {
     const memberIds = Object.keys(channel.state?.members || {});
-    const isDM = (channel.data?.type || channel.type) === "messaging" && memberIds.length === 2;
+    const isDM =
+      (channel.data?.type || channel.type) === "messaging" &&
+      memberIds.length === 2;
     const isGroup = !isDM && memberIds.length > 2;
-    const otherUserId = user?.id ? memberIds.find((id) => id !== user.id) : undefined;
-    
+    const otherUserId = user?.id
+      ? memberIds.find((id) => id !== user.id)
+      : undefined;
+
     // Don't show channels with blocked users
     if (isDM && otherUserId && blockedUserIds.includes(otherUserId)) {
       return null;
     }
-    
-    const otherMember = otherUserId ? channel.state.members[otherUserId] : undefined;
-    const displayName = (channel.data?.name as string) || otherMember?.user?.name || channel.id;
-    const avatar = (channel.data?.image as string) || otherMember?.user?.image || "/vercel.svg";
+
+    const otherMember = otherUserId
+      ? channel.state.members[otherUserId]
+      : undefined;
+    const displayName =
+      (channel.data?.name as string) || otherMember?.user?.name || channel.id;
+    const avatar =
+      (channel.data?.image as string) ||
+      otherMember?.user?.image ||
+      "/vercel.svg";
 
     const isActive = activeChannel?.id === channel.id;
 
     // Get permissions for group actions
     const hasInvitePermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id && isGroup ? { channelId: channel.id, userId: user.id, permission: "invite_members" } : "skip"
+      user?.id && isGroup
+        ? {
+            channelId: channel.id,
+            userId: user.id,
+            permission: "invite_members",
+          }
+        : "skip"
     );
     const hasViewMembersPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id && isGroup ? { channelId: channel.id, userId: user.id, permission: "view_members" } : "skip"
+      user?.id && isGroup
+        ? { channelId: channel.id, userId: user.id, permission: "view_members" }
+        : "skip"
     );
     const hasEditSettingsPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id && isGroup ? { channelId: channel.id, userId: user.id, permission: "edit_group_settings" } : "skip"
+      user?.id && isGroup
+        ? {
+            channelId: channel.id,
+            userId: user.id,
+            permission: "edit_group_settings",
+          }
+        : "skip"
     );
 
     const onOpen = () => setActiveChannel?.(channel);
 
     const onBlock = async () => {
       if (!isDM || !otherUserId) return;
-      const confirmed = window.confirm("Block this user? You will mute them and hide the conversation.");
+      const confirmed = window.confirm(
+        "Block this user? You will mute them and hide the conversation."
+      );
       if (!confirmed) return;
       try {
         await streamClient.muteUser(otherUserId);
@@ -123,7 +150,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     const onCloseDM = async () => {
       if (!user?.id) return;
-      const confirmed = window.confirm("Close this DM? You will leave the conversation.");
+      const confirmed = window.confirm(
+        "Close this DM? You will leave the conversation."
+      );
       if (!confirmed) return;
       try {
         await channel.removeMembers([user.id]);
@@ -137,19 +166,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     const onInviteMember = async (selectedUser: any) => {
       if (!user?.id) return;
-      
+
       // Check if user has invite permission
       if (!hasInvitePermission) {
-        alert("You don't have permission to invite members. You need the 'invite_members' permission.");
+        alert(
+          "You don't have permission to invite members. You need the 'invite_members' permission."
+        );
         return;
       }
-      
+
       try {
         await channel.addMembers([selectedUser.userId]);
       } catch (e: any) {
         console.error("Failed to add member:", e);
         if (e.message?.includes("UpdateChannelMembers")) {
-          alert("You don't have permission to invite members. Only users with 'invite_members' permission can invite members.");
+          alert(
+            "You don't have permission to invite members. Only users with 'invite_members' permission can invite members."
+          );
         } else {
           alert(e.message || "Failed to add member. Please try again.");
         }
@@ -171,12 +204,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       >
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative h-8 w-8">
-            <Image src={avatar} alt={displayName} fill className="rounded-full object-cover" />
+            <Image
+              src={avatar}
+              alt={displayName}
+              fill
+              className="rounded-full object-cover"
+            />
           </div>
           <div className="min-w-0">
             <div className="text-sm font-medium truncate">{displayName}</div>
             <div className="text-xs text-muted-foreground truncate">
-              {(channel.data?.last_message_at as any)?.toString?.() || "Nothing yet..."}
+              {(channel.data?.last_message_at as any)?.toString?.() ||
+                "Nothing yet..."}
             </div>
           </div>
         </div>
@@ -190,7 +229,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <EllipsisVertical className="h-4 w-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuContent
+            align="end"
+            className="w-48"
+            onClick={(e) => e.stopPropagation()}
+          >
             {isGroup && (
               <>
                 {hasEditSettingsPermission && (
@@ -210,7 +253,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   </ViewMembersDialog>
                 )}
                 {hasInvitePermission && (
-                  <InviteMemberDialog channel={channel} onInvite={onInviteMember}>
+                  <InviteMemberDialog
+                    channel={channel}
+                    onInvite={onInviteMember}
+                  >
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       <UserPlus className="h-4 w-4 mr-2" />
                       Invite Member
@@ -222,7 +268,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <DropdownMenuItem onClick={onCloseDM} disabled={!isDM}>
               Close DM
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={onBlock} disabled={!isDM} className="text-red-600 focus:text-red-700">
+            <DropdownMenuItem
+              onClick={onBlock}
+              disabled={!isDM}
+              className="text-red-600 focus:text-red-700"
+            >
               Block
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -231,16 +281,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  function MemberRoleDropdown({ 
-    member, 
+  function MemberRoleDropdown({
+    member,
     currentRole,
-    availableRoles, 
-    onAssignRole 
-  }: { 
-    member: any, 
-    currentRole: string,
-    availableRoles: any[], 
-    onAssignRole: (roleName: string) => void 
+    availableRoles,
+    onAssignRole,
+  }: {
+    member: any;
+    currentRole: string;
+    availableRoles: any[];
+    onAssignRole: (roleName: string) => void;
   }) {
     const [open, setOpen] = useState(false);
 
@@ -280,48 +330,80 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  function GroupSettingsDialog({ channel, children }: { channel: any, children: React.ReactNode }) {
+  function GroupSettingsDialog({
+    channel,
+    children,
+  }: {
+    channel: any;
+    children: React.ReactNode;
+  }) {
     const [open, setOpen] = useState(false);
     const [groupName, setGroupName] = useState(channel.data?.name || "");
     const [groupImage, setGroupImage] = useState(channel.data?.image || "");
     const [refreshKey, setRefreshKey] = useState(0);
     const [error, setError] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<"settings" | "roles" | "members">("settings");
+    const [activeTab, setActiveTab] = useState<
+      "settings" | "roles" | "members"
+    >("settings");
     const [newRoleName, setNewRoleName] = useState("");
-    const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
+    const [selectedPermissions, setSelectedPermissions] = useState<string[]>(
+      []
+    );
     const [showCreateRole, setShowCreateRole] = useState(false);
     const { user } = useUser();
 
     // Get all users to match with channel members
     const allUsers = useQuery(api.users.searchUsers, { searchTerm: "" }) || [];
-    const userMap = new Map(allUsers.map(u => [u.userId, u]));
+    const userMap = new Map(allUsers.map((u) => [u.userId, u]));
 
     // Role management queries and mutations
     const userRole = useQuery(
       api.users.getUserGroupRole,
       user?.id ? { channelId: channel.id, userId: user.id } : "skip"
     );
-    const groupRoles = useQuery(api.users.getGroupRoles, { channelId: channel.id });
-    const groupMembersWithRoles = useQuery(api.users.getGroupMembersWithRoles, { channelId: channel.id });
+    const groupRoles = useQuery(api.users.getGroupRoles, {
+      channelId: channel.id,
+    });
+    const groupMembersWithRoles = useQuery(api.users.getGroupMembersWithRoles, {
+      channelId: channel.id,
+    });
     const hasEditPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id ? { channelId: channel.id, userId: user.id, permission: "edit_group_settings" } : "skip"
+      user?.id
+        ? {
+            channelId: channel.id,
+            userId: user.id,
+            permission: "edit_group_settings",
+          }
+        : "skip"
     );
     const hasKickPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id ? { channelId: channel.id, userId: user.id, permission: "kick_members" } : "skip"
+      user?.id
+        ? { channelId: channel.id, userId: user.id, permission: "kick_members" }
+        : "skip"
     );
     const hasInvitePermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id ? { channelId: channel.id, userId: user.id, permission: "invite_members" } : "skip"
+      user?.id
+        ? {
+            channelId: channel.id,
+            userId: user.id,
+            permission: "invite_members",
+          }
+        : "skip"
     );
     const hasManageRolesPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id ? { channelId: channel.id, userId: user.id, permission: "manage_roles" } : "skip"
+      user?.id
+        ? { channelId: channel.id, userId: user.id, permission: "manage_roles" }
+        : "skip"
     );
     const hasAssignRolesPermission = useQuery(
       api.users.hasGroupPermission,
-      user?.id ? { channelId: channel.id, userId: user.id, permission: "assign_roles" } : "skip"
+      user?.id
+        ? { channelId: channel.id, userId: user.id, permission: "assign_roles" }
+        : "skip"
     );
     const initializeRoles = useMutation(api.users.initializeGroupRoles);
     const assignRole = useMutation(api.users.assignGroupRole);
@@ -330,19 +412,53 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     // Available permissions for role creation
     const availablePermissions = [
-      { id: "send_messages", label: "Send Messages", description: "Can send messages in the group" },
-      { id: "view_members", label: "View Members", description: "Can view group member list" },
-      { id: "invite_members", label: "Invite Members", description: "Can invite new members to the group" },
-      { id: "kick_members", label: "Kick Members", description: "Can remove members from the group" },
-      { id: "edit_group_settings", label: "Edit Group Settings", description: "Can modify group name and image" },
-      { id: "manage_roles", label: "Manage Roles", description: "Can create, edit, and delete roles" },
-      { id: "assign_roles", label: "Assign Roles", description: "Can assign roles to other members" },
-      { id: "delete_group", label: "Delete Group", description: "Can delete the entire group" },
+      {
+        id: "send_messages",
+        label: "Send Messages",
+        description: "Can send messages in the group",
+      },
+      {
+        id: "view_members",
+        label: "View Members",
+        description: "Can view group member list",
+      },
+      {
+        id: "invite_members",
+        label: "Invite Members",
+        description: "Can invite new members to the group",
+      },
+      {
+        id: "kick_members",
+        label: "Kick Members",
+        description: "Can remove members from the group",
+      },
+      {
+        id: "edit_group_settings",
+        label: "Edit Group Settings",
+        description: "Can modify group name and image",
+      },
+      {
+        id: "manage_roles",
+        label: "Manage Roles",
+        description: "Can create, edit, and delete roles",
+      },
+      {
+        id: "assign_roles",
+        label: "Assign Roles",
+        description: "Can assign roles to other members",
+      },
+      {
+        id: "delete_group",
+        label: "Delete Group",
+        description: "Can delete the entire group",
+      },
     ];
 
     const handleCreateRole = async () => {
       if (!newRoleName.trim() || selectedPermissions.length === 0) {
-        setError("Please provide a role name and select at least one permission.");
+        setError(
+          "Please provide a role name and select at least one permission."
+        );
         return;
       }
 
@@ -354,7 +470,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           permissions: selectedPermissions,
           createdBy: user?.id || "",
         });
-        
+
         setNewRoleName("");
         setSelectedPermissions([]);
         setShowCreateRole(false);
@@ -369,7 +485,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         return;
       }
 
-      const confirmed = window.confirm(`Are you sure you want to delete the "${roleName}" role?`);
+      const confirmed = window.confirm(
+        `Are you sure you want to delete the "${roleName}" role?`
+      );
       if (!confirmed) return;
 
       try {
@@ -381,7 +499,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     };
 
     const memberIds = Object.keys(channel.state?.members || {});
-    const members = memberIds.map(memberId => {
+    const members = memberIds.map((memberId) => {
       const member = channel.state.members[memberId];
       const userData = userMap.get(memberId);
       return {
@@ -396,7 +514,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const handleSaveSettings = async () => {
       try {
         setError(null);
-        
+
         // Check permissions
         if (!hasEditPermission) {
           setError("You don't have permission to edit group settings.");
@@ -411,40 +529,50 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       } catch (e: any) {
         console.error("Failed to update group settings:", e);
         if (e.message?.includes("UpdateChannelMembers")) {
-          setError("You don't have permission to update group settings. Only group owners and admins can modify group settings.");
+          setError(
+            "You don't have permission to update group settings. Only group owners and admins can modify group settings."
+          );
         } else {
-          setError(e.message || "Failed to update group settings. Please try again.");
+          setError(
+            e.message || "Failed to update group settings. Please try again."
+          );
         }
       }
     };
 
     const handleKickMember = async (memberId: string) => {
-      const confirmed = window.confirm(`Are you sure you want to remove this member from the group?`);
+      const confirmed = window.confirm(
+        `Are you sure you want to remove this member from the group?`
+      );
       if (!confirmed) return;
-      
+
       try {
         setError(null);
-        
+
         // Check if user has kick permission
         if (!hasKickPermission) {
-          setError("You don't have permission to remove members from this group. You need the 'kick_members' permission.");
+          setError(
+            "You don't have permission to remove members from this group. You need the 'kick_members' permission."
+          );
           return;
         }
 
         // Remove member from channel
         await channel.removeMembers([memberId]);
-        
+
         // Force refresh the channel to update member list
         await channel.watch();
-        
+
         console.log(`Successfully removed member ${memberId} from group`);
-        
+
         // Force UI refresh by updating the refresh key
-        setRefreshKey(prev => prev + 1);
+        setRefreshKey((prev) => prev + 1);
       } catch (e: any) {
         console.error("Failed to kick member:", e);
         if (e.message?.includes("UpdateChannelMembers")) {
-          setError("You don't have permission to remove members. Only users with 'kick_members' permission can kick members.");
+          setError(
+            "You don't have permission to remove members. Only users with 'kick_members' permission can kick members."
+          );
         } else {
           setError(e.message || "Failed to remove member. Please try again.");
         }
@@ -475,8 +603,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <button
               onClick={() => setActiveTab("settings")}
               className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === "settings" 
-                  ? "bg-background text-foreground shadow-sm" 
+                activeTab === "settings"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -485,8 +613,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <button
               onClick={() => setActiveTab("roles")}
               className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === "roles" 
-                  ? "bg-background text-foreground shadow-sm" 
+                activeTab === "roles"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -495,8 +623,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <button
               onClick={() => setActiveTab("members")}
               className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === "members" 
-                  ? "bg-background text-foreground shadow-sm" 
+                activeTab === "members"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -512,87 +640,90 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <label htmlFor="groupName" className="text-sm font-medium">
                   Group Name
                 </label>
-              <Input
-                id="groupName"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
-                placeholder="Enter group name..."
-                className="w-full"
-              />
-            </div>
+                <Input
+                  id="groupName"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  placeholder="Enter group name..."
+                  className="w-full"
+                />
+              </div>
 
-            {/* Group Image */}
-            <div className="space-y-2">
-              <label htmlFor="groupImage" className="text-sm font-medium">
-                Group Image URL
-              </label>
-              <Input
-                id="groupImage"
-                value={groupImage}
-                onChange={(e) => setGroupImage(e.target.value)}
-                placeholder="Enter image URL..."
-                className="w-full"
-              />
-              {groupImage && (
-                <div className="mt-2">
-                  <Image
-                    src={groupImage}
-                    alt="Group preview"
-                    width={60}
-                    height={60}
-                    className="h-15 w-15 rounded-lg object-cover border"
-                    onError={() => setGroupImage("")}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Kick Members */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium">Remove Members</h4>
-              <div className="space-y-2 max-h-[200px] overflow-y-auto">
-                {members.filter(member => !member.isCurrentUser).map((member) => (
-                  <div
-                    key={`${member.userId}-${refreshKey}`}
-                    className="flex items-center justify-between p-3 bg-muted/50 border border-border rounded-lg"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Image
-                        src={member.imageUrl}
-                        alt={member.name}
-                        width={32}
-                        height={32}
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-foreground truncate">
-                          {member.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {member.email}
-                        </p>
-                      </div>
-                    </div>
-                    {hasKickPermission && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleKickMember(member.userId)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      >
-                        Remove
-                      </Button>
-                    )}
+              {/* Group Image */}
+              <div className="space-y-2">
+                <label htmlFor="groupImage" className="text-sm font-medium">
+                  Group Image URL
+                </label>
+                <Input
+                  id="groupImage"
+                  value={groupImage}
+                  onChange={(e) => setGroupImage(e.target.value)}
+                  placeholder="Enter image URL..."
+                  className="w-full"
+                />
+                {groupImage && (
+                  <div className="mt-2">
+                    <Image
+                      src={groupImage}
+                      alt="Group preview"
+                      width={60}
+                      height={60}
+                      className="h-15 w-15 rounded-lg object-cover border"
+                      onError={() => setGroupImage("")}
+                    />
                   </div>
-                ))}
-                {members.filter(member => !member.isCurrentUser).length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    No other members to remove
-                  </p>
                 )}
               </div>
+
+              {/* Kick Members */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium">Remove Members</h4>
+                <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                  {members
+                    .filter((member) => !member.isCurrentUser)
+                    .map((member) => (
+                      <div
+                        key={`${member.userId}-${refreshKey}`}
+                        className="flex items-center justify-between p-3 bg-muted/50 border border-border rounded-lg"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <Image
+                            src={member.imageUrl}
+                            alt={member.name}
+                            width={32}
+                            height={32}
+                            className="h-8 w-8 rounded-full object-cover"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-foreground truncate">
+                              {member.name}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {member.email}
+                            </p>
+                          </div>
+                        </div>
+                        {hasKickPermission && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleKickMember(member.userId)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  {members.filter((member) => !member.isCurrentUser).length ===
+                    0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      No other members to remove
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
           )}
 
           {activeTab === "roles" && (
@@ -601,19 +732,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <h3 className="text-lg font-semibold">Role Management</h3>
                 {hasManageRolesPermission && (
                   <div className="flex gap-2">
-                    <Button 
+                    <Button
                       variant="outline"
                       onClick={() => {
                         if (user?.id) {
-                          initializeRoles({ channelId: channel.id, createdBy: user.id });
+                          initializeRoles({
+                            channelId: channel.id,
+                            createdBy: user.id,
+                          });
                         }
                       }}
                     >
                       Initialize Default Roles
                     </Button>
-                    <Button 
-                      onClick={() => setShowCreateRole(true)}
-                    >
+                    <Button onClick={() => setShowCreateRole(true)}>
                       Create Custom Role
                     </Button>
                   </div>
@@ -622,7 +754,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
               {!hasManageRolesPermission && (
                 <p className="text-sm text-muted-foreground">
-                  You don't have permission to manage roles. You need the 'manage_roles' permission.
+                  You don't have permission to manage roles. You need the
+                  'manage_roles' permission.
                 </p>
               )}
 
@@ -630,7 +763,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {showCreateRole && hasManageRolesPermission && (
                 <div className="border rounded-lg p-4 space-y-4">
                   <h4 className="font-medium">Create New Role</h4>
-                  
+
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Role Name</label>
                     <Input
@@ -645,22 +778,38 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <label className="text-sm font-medium">Permissions</label>
                     <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
                       {availablePermissions.map((permission) => (
-                        <label key={permission.id} className="flex items-start space-x-2 cursor-pointer">
+                        <label
+                          key={permission.id}
+                          className="flex items-start space-x-2 cursor-pointer"
+                        >
                           <input
                             type="checkbox"
-                            checked={selectedPermissions.includes(permission.id)}
+                            checked={selectedPermissions.includes(
+                              permission.id
+                            )}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setSelectedPermissions([...selectedPermissions, permission.id]);
+                                setSelectedPermissions([
+                                  ...selectedPermissions,
+                                  permission.id,
+                                ]);
                               } else {
-                                setSelectedPermissions(selectedPermissions.filter(p => p !== permission.id));
+                                setSelectedPermissions(
+                                  selectedPermissions.filter(
+                                    (p) => p !== permission.id
+                                  )
+                                );
                               }
                             }}
                             className="mt-1"
                           />
                           <div className="flex-1">
-                            <div className="text-sm font-medium">{permission.label}</div>
-                            <div className="text-xs text-muted-foreground">{permission.description}</div>
+                            <div className="text-sm font-medium">
+                              {permission.label}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {permission.description}
+                            </div>
                           </div>
                         </label>
                       ))}
@@ -668,14 +817,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button onClick={handleCreateRole} disabled={!newRoleName.trim() || selectedPermissions.length === 0}>
+                    <Button
+                      onClick={handleCreateRole}
+                      disabled={
+                        !newRoleName.trim() || selectedPermissions.length === 0
+                      }
+                    >
                       Create Role
                     </Button>
-                    <Button variant="outline" onClick={() => {
-                      setShowCreateRole(false);
-                      setNewRoleName("");
-                      setSelectedPermissions([]);
-                    }}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setShowCreateRole(false);
+                        setNewRoleName("");
+                        setSelectedPermissions([]);
+                      }}
+                    >
                       Cancel
                     </Button>
                   </div>
@@ -688,28 +845,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {groupRoles && groupRoles.length > 0 ? (
                   <div className="space-y-2">
                     {groupRoles.map((role) => (
-                      <div key={role.roleName} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div
+                        key={role.roleName}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
                         <div className="flex-1">
                           <div className="font-medium">{role.roleName}</div>
                           <div className="text-sm text-muted-foreground">
-                            {role.permissions.length} permission(s): {role.permissions.join(", ")}
+                            {role.permissions.length} permission(s):{" "}
+                            {role.permissions.join(", ")}
                           </div>
                         </div>
-                        {hasManageRolesPermission && role.roleName !== "CEO" && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDeleteRole(role.roleName)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            Delete
-                          </Button>
-                        )}
+                        {hasManageRolesPermission &&
+                          role.roleName !== "CEO" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDeleteRole(role.roleName)}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              Delete
+                            </Button>
+                          )}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No roles found. Initialize default roles to get started.</p>
+                  <p className="text-sm text-muted-foreground">
+                    No roles found. Initialize default roles to get started.
+                  </p>
                 )}
               </div>
             </div>
@@ -721,16 +885,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <p className="text-muted-foreground text-sm">
                 View and manage group members with their roles
               </p>
-              
+
               {members.length > 0 ? (
                 <div className="space-y-2">
                   {members.map((member) => {
                     // Find the member's current role
-                    const memberRole = groupMembersWithRoles?.find(m => m.userId === member.userId);
+                    const memberRole = groupMembersWithRoles?.find(
+                      (m) => m.userId === member.userId
+                    );
                     const currentRole = memberRole?.roleName || "Member";
-                    
+
                     return (
-                      <div key={member.userId} className="flex items-center justify-between p-3 bg-muted/50 border border-border rounded-lg">
+                      <div
+                        key={member.userId}
+                        className="flex items-center justify-between p-3 bg-muted/50 border border-border rounded-lg"
+                      >
                         <div className="flex items-center space-x-3">
                           <Image
                             src={member.imageUrl}
@@ -741,7 +910,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           />
                           <div>
                             <p className="text-sm font-medium">{member.name}</p>
-                            <p className="text-xs text-muted-foreground">{member.email}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {member.email}
+                            </p>
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
                                 {currentRole}
@@ -764,7 +935,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                   assignedBy: user?.id || "",
                                 });
                               } catch (e: any) {
-                                setError(e.message || "Failed to assign role. Please try again.");
+                                setError(
+                                  e.message ||
+                                    "Failed to assign role. Please try again."
+                                );
                               }
                             }}
                           />
@@ -774,7 +948,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   })}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground text-center py-8">No members found</p>
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  No members found
+                </p>
               )}
             </div>
           )}
@@ -784,9 +960,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               Cancel
             </Button>
             {activeTab === "settings" && (
-              <Button onClick={handleSaveSettings}>
-                Save Changes
-              </Button>
+              <Button onClick={handleSaveSettings}>Save Changes</Button>
             )}
           </DialogFooter>
         </DialogContent>
@@ -794,16 +968,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  function ViewMembersDialog({ channel, children }: { channel: any, children: React.ReactNode }) {
+  function ViewMembersDialog({
+    channel,
+    children,
+  }: {
+    channel: any;
+    children: React.ReactNode;
+  }) {
     const [open, setOpen] = useState(false);
     const { user } = useUser();
 
     // Get all users to match with channel members
     const allUsers = useQuery(api.users.searchUsers, { searchTerm: "" }) || [];
-    const userMap = new Map(allUsers.map(u => [u.userId, u]));
+    const userMap = new Map(allUsers.map((u) => [u.userId, u]));
 
     const memberIds = Object.keys(channel.state?.members || {});
-    const members = memberIds.map(memberId => {
+    const members = memberIds.map((memberId) => {
       const member = channel.state.members[memberId];
       const userData = userMap.get(memberId);
       return {
@@ -822,9 +1002,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[500px] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Members of {channel.data?.name || "Group"}</DialogTitle>
+            <DialogTitle>
+              Members of {channel.data?.name || "Group"}
+            </DialogTitle>
             <DialogDescription>
-              {members.length} member{members.length !== 1 ? 's' : ''} in this group
+              {members.length} member{members.length !== 1 ? "s" : ""} in this
+              group
             </DialogDescription>
           </DialogHeader>
 
@@ -893,7 +1076,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  function InviteMemberDialog({ channel, onInvite, children }: { channel: any, onInvite: (user: any) => void, children: React.ReactNode }) {
+  function InviteMemberDialog({
+    channel,
+    onInvite,
+    children,
+  }: {
+    channel: any;
+    onInvite: (user: any) => void;
+    children: React.ReactNode;
+  }) {
     const [open, setOpen] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
 
@@ -927,7 +1118,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[500px] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Invite Members to {channel.data?.name || "Group"}</DialogTitle>
+            <DialogTitle>
+              Invite Members to {channel.data?.name || "Group"}
+            </DialogTitle>
             <DialogDescription>
               Search for users to add to this group chat
             </DialogDescription>
@@ -985,7 +1178,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               disabled={selectedUsers.length === 0}
               onClick={handleInvite}
             >
-              Invite {selectedUsers.length} Member{selectedUsers.length !== 1 ? 's' : ''}
+              Invite {selectedUsers.length} Member
+              {selectedUsers.length !== 1 ? "s" : ""}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1032,7 +1226,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      
+
       {/* User Section at Bottom */}
       <SidebarHeader>
         <SidebarMenu>
@@ -1062,18 +1256,45 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <div className="relative">
                         {(() => {
                           const status = currentUser?.status || "online";
-                          const statusConfig = {
-                            online: { icon: Circle, color: "text-green-500", bgColor: "bg-green-500" },
-                            idle: { icon: Moon, color: "text-yellow-500", bgColor: "bg-yellow-500" },
-                            dnd: { icon: Shield, color: "text-red-500", bgColor: "bg-red-500" },
-                            offline: { icon: Wifi, color: "text-gray-500", bgColor: "bg-gray-500" },
-                          }[status] || statusConfig.online;
-                          
+                          const statusConfig: {
+                            [key: string]: {
+    icon: React.ElementType;
+    color: string;
+    bgColor: string;
+  };
+                          } =
+                            {
+                              online: {
+                                icon: Circle,
+                                color: "text-green-500",
+                                bgColor: "bg-green-500",
+                              },
+                              idle: {
+                                icon: Moon,
+                                color: "text-yellow-500",
+                                bgColor: "bg-yellow-500",
+                              },
+                              dnd: {
+                                icon: Shield,
+                                color: "text-red-500",
+                                bgColor: "bg-red-500",
+                              },
+                              offline: {
+                                icon: Wifi,
+                                color: "text-gray-500",
+                                bgColor: "bg-gray-500",
+                              },
+                            }[status] || statusConfig.online;
+
                           const Icon = statusConfig.icon;
                           return (
                             <>
-                              <Icon className={`h-4 w-4 ${statusConfig.color}`} />
-                              <div className={`absolute -bottom-1 -right-1 h-2 w-2 ${statusConfig.bgColor} rounded-full border border-background`} />
+                              <Icon
+                                className={`h-4 w-4 ${statusConfig.color}`}
+                              />
+                              <div
+                                className={`absolute -bottom-1 -right-1 h-2 w-2 ${statusConfig.bgColor} rounded-full border border-background`}
+                              />
                             </>
                           );
                         })()}
