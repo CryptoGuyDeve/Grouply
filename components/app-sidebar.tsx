@@ -1256,35 +1256,40 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <div className="relative">
                         {(() => {
                           const status = currentUser?.status || "online";
-                          const statusConfig: {
+
+                          // Define all statuses
+                          const statusMap: {
                             [key: string]: {
-    icon: React.ElementType;
-    color: string;
-    bgColor: string;
-  };
-                          } =
-                            {
-                              online: {
-                                icon: Circle,
-                                color: "text-green-500",
-                                bgColor: "bg-green-500",
-                              },
-                              idle: {
-                                icon: Moon,
-                                color: "text-yellow-500",
-                                bgColor: "bg-yellow-500",
-                              },
-                              dnd: {
-                                icon: Shield,
-                                color: "text-red-500",
-                                bgColor: "bg-red-500",
-                              },
-                              offline: {
-                                icon: Wifi,
-                                color: "text-gray-500",
-                                bgColor: "bg-gray-500",
-                              },
-                            }[status] || statusConfig.online;
+                              icon: React.ElementType;
+                              color: string;
+                              bgColor: string;
+                            };
+                          } = {
+                            online: {
+                              icon: Circle,
+                              color: "text-green-500",
+                              bgColor: "bg-green-500",
+                            },
+                            idle: {
+                              icon: Moon,
+                              color: "text-yellow-500",
+                              bgColor: "bg-yellow-500",
+                            },
+                            dnd: {
+                              icon: Shield,
+                              color: "text-red-500",
+                              bgColor: "bg-red-500",
+                            },
+                            offline: {
+                              icon: Wifi,
+                              color: "text-gray-500",
+                              bgColor: "bg-gray-500",
+                            },
+                          };
+
+                          // Pick the correct one, fallback to online
+                          const statusConfig =
+                            statusMap[status] || statusMap.online;
 
                           const Icon = statusConfig.icon;
                           return (
@@ -1301,6 +1306,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       </div>
                     </Button>
                   </StatusDialog>
+
                   <SettingsDialog>
                     <Button
                       variant="ghost"
