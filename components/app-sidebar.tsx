@@ -33,13 +33,14 @@ import {
 } from "@/components/ui/dialog";
 import { EllipsisVertical, UserPlus, Users, Settings } from "lucide-react";
 import { SettingsDialog } from "./SettingsDialog";
+import { StatusDialog } from "./StatusDialog";
 import Image from "next/image";
 import streamClient from "@/lib/stream";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import UserSearch from "./UserSearch";
-import { XIcon, AlertCircle } from "lucide-react";
+import { XIcon, AlertCircle, Circle, Moon, Shield, Wifi } from "lucide-react";
 import { Input } from "./ui/input";
 import { Alert, AlertDescription } from "./ui/alert";
 // Removed per request: channel actions moved to chat header
@@ -48,6 +49,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useUser();
   // Channel actions are handled in the chat header, not in the sidebar header
   const blockUser = useMutation(api.users.blockUser);
+  
+  // Get current user data
+  const currentUser = useQuery(
+    api.users.getUserByClerkId,
+    user?.id ? { userId: user.id } : "skip"
+  );
   
   // Get blocked user IDs to filter channels
   const blockedUserIds = useQuery(
@@ -988,41 +995,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar variant="floating" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <div className="flex items-center justify-between w-full rounded-xl border border-white/20 dark:border-white/10 bg-gradient-to-br from-background/70 to-background/30 backdrop-blur-xl px-3 py-2 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary/15 ring-1 ring-primary/20 flex items-center justify-center text-primary text-xs font-bold">
-                    G
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Welcome back
-                    </span>
-                    <span className="text-sm font-semibold">
-                      {user?.firstName} {user?.lastName}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <SettingsDialog>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 hover:bg-muted/60"
-                    >
-                      <Settings className="h-4 w-4" />
-                    </Button>
-                  </SettingsDialog>
-                  <UserButton signInUrl="/sign-in" />
-                </div>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu className="gap-3">
@@ -1060,6 +1032,70 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      
+      {/* User Section at Bottom */}
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <div className="flex items-center justify-between w-full rounded-xl border border-white/20 dark:border-white/10 bg-gradient-to-br from-background/70 to-background/30 backdrop-blur-xl px-3 py-2 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-lg bg-primary/15 ring-1 ring-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                    G
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Welcome back
+                    </span>
+                    <span className="text-sm font-semibold">
+                      {currentUser?.username || user?.firstName || "User"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <StatusDialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-muted/60"
+                    >
+                      <div className="relative">
+                        {(() => {
+                          const status = currentUser?.status || "online";
+                          const statusConfig = {
+                            online: { icon: Circle, color: "text-green-500", bgColor: "bg-green-500" },
+                            idle: { icon: Moon, color: "text-yellow-500", bgColor: "bg-yellow-500" },
+                            dnd: { icon: Shield, color: "text-red-500", bgColor: "bg-red-500" },
+                            offline: { icon: Wifi, color: "text-gray-500", bgColor: "bg-gray-500" },
+                          }[status] || statusConfig.online;
+                          
+                          const Icon = statusConfig.icon;
+                          return (
+                            <>
+                              <Icon className={`h-4 w-4 ${statusConfig.color}`} />
+                              <div className={`absolute -bottom-1 -right-1 h-2 w-2 ${statusConfig.bgColor} rounded-full border border-background`} />
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </Button>
+                  </StatusDialog>
+                  <SettingsDialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-muted/60"
+                    >
+                      <Settings className="h-4 w-4" />
+                    </Button>
+                  </SettingsDialog>
+                  <UserButton signInUrl="/sign-in" />
+                </div>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
     </Sidebar>
   );
 }

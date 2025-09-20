@@ -8,9 +8,12 @@ export default defineSchema({
         name: v.string(),
         email: v.string(),
         imageUrl: v.string(),
+        username: v.optional(v.string()),
+        status: v.optional(v.string()), // "online", "idle", "dnd", "offline"
     })
         .index("by_userId", ["userId"])
-        .index("by_email", ["email"]),
+        .index("by_email", ["email"])
+        .index("by_username", ["username"]),
 
     // User blocks (blocker blocks blocked)
     blocks: defineTable({

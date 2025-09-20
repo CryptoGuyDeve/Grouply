@@ -21,19 +21,27 @@ export const upsertUser = mutation({
     name: v.string(),
     email: v.string(),
     imageUrl: v.string(),
+    username: v.optional(v.string()),
   },
-  handler: async (ctx, { userId, name, email, imageUrl }) => {
+  handler: async (ctx, { userId, name, email, imageUrl, username }) => {
     const existingUser = await ctx.db
       .query("users")
       .withIndex("by_userId", (q) => q.eq("userId", userId))
       .first();
 
     if (existingUser) {
-      await ctx.db.patch(existingUser._id, { name, imageUrl });
+      await ctx.db.patch(existingUser._id, { name, imageUrl, username });
       return existingUser._id;
     }
 
-    return await ctx.db.insert("users", { userId, name, email, imageUrl });
+    return await ctx.db.insert("users", { 
+      userId, 
+      name, 
+      email, 
+      imageUrl, 
+      username,
+      status: "online" // Default status
+    });
   },
 });
 
@@ -607,6 +615,58 @@ export const getPendingPaymentsToMe = query({
         sender: userMap.get(p.senderId),
       }))
       .sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
+// User Status Management Functions
+
+// Update user status
+export const updateUserStatus = mutation({
+  args: {
+    userId: v.string(),
+    status: v.string(), // "online", "idle", "dnd", "offline"
+  },
+  handler: async (ctx, { userId, status }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await ctx.db.patch(user._id, { status });
+  },
+});
+
+// Update username
+export const updateUsername = mutation({
+  args: {
+    userId: v.string(),
+    username: v.string(),
+  },
+  handler: async (ctx, { userId, username }) => {
+    // Check if username is already taken
+    const existingUser = await ctx.db
+      .query("users")
+      .withIndex("by_username", (q) => q.eq("username", username))
+      .first();
+
+    if (existingUser && existingUser.userId !== userId) {
+      throw new Error("Username is already taken");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await ctx.db.patch(user._id, { username });
   },
 });
 

@@ -41,6 +41,7 @@ function UserSyncWrapper({ children }: { children: React.ReactNode }) {
           "Unknown",
         email: user.emailAddresses[0]?.emailAddress || "",
         imageUrl: user.imageUrl || "",
+        username: user.username || undefined,
       });
 
       // 2.Connect user to stream
