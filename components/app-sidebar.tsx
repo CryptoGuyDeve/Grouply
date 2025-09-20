@@ -1246,25 +1246,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </span>
                   </div>
                 </div>
+
                 <div className="flex items-center gap-2">
+                  {/* Status button */}
                   <StatusDialog>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0 hover:bg-muted/60"
+                      aria-label="Change status"
                     >
                       <div className="relative">
                         {(() => {
                           const status = currentUser?.status || "online";
 
-                          // Define all statuses
-                          const statusMap: {
-                            [key: string]: {
+                          const statusMap: Record<
+                            string,
+                            {
                               icon: React.ElementType;
                               color: string;
                               bgColor: string;
-                            };
-                          } = {
+                            }
+                          > = {
                             online: {
                               icon: Circle,
                               color: "text-green-500",
@@ -1287,11 +1290,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             },
                           };
 
-                          // Pick the correct one, fallback to online
                           const statusConfig =
                             statusMap[status] || statusMap.online;
-
                           const Icon = statusConfig.icon;
+
                           return (
                             <>
                               <Icon
@@ -1307,15 +1309,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </Button>
                   </StatusDialog>
 
+                  {/* Settings button */}
                   <SettingsDialog>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0 hover:bg-muted/60"
+                      aria-label="Settings"
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
                   </SettingsDialog>
+
+                  {/* User auth button */}
                   <UserButton signInUrl="/sign-in" />
                 </div>
               </div>
